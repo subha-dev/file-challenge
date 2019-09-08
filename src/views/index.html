@@ -1,0 +1,97 @@
+<html>
+
+<head>
+    <link href="../css/style.css" rel="stylesheet" type="text/css">
+</head>
+
+<body>
+    <div class="header">
+        <div class="header-text">Process Environment File Modifier</div>
+    </div>
+    <div class="container">
+        <input class="search-input" type="text" id="process-input" placeholder="Process Name" onkeyup="search(event)"
+            autofocus>
+        <input class="search-input" type="text" id="key-input" placeholder="Key">
+        <input class="search-input" type="text" id="value-input" placeholder="Value">
+        <button class="set-button" type="button" onclick="setNewValue()" title="Add or modify environment variables">Set
+            New Value</button>
+        <button class="add-button" type="button" onclick="addNewProcess()" title="Add new process">+</button>
+        <div class="data">
+            Environment Variables [<strong>Key</strong>: <value>Value</value>]
+            <ul id="data-ul">
+            </ul>
+        </div>
+    </div>
+
+    <script>
+        function search(event) {
+            let value = event.target.value;
+            let xhr = new XMLHttpRequest();
+            xhr.open("GET", `/api/getEnvironment/${value}`, true);
+            xhr.onreadystatechange = () => {
+                if (xhr.readyState === 4) {
+                    if (xhr.status === 200 && xhr.responseText) {
+                        setDataInUl(xhr.responseText);
+                    } else {
+                        document.getElementById("data-ul").innerHTML = "";
+                    }
+                }
+            }
+            xhr.send();
+        }
+
+        function setDataInUl(json) {
+            const data = JSON.parse(json);
+            let html = "";
+            for (let key in data) {
+                html += `<li><stong>${key}</strong>:   <value>${data[key]}</value></li>`
+            }
+            document.getElementById("data-ul").innerHTML = html;
+        }
+
+        function setNewValue() {
+            const process = document.getElementById("process-input").value.trim();
+            if (!process) {
+                alert("Process name can't be empty!");
+            } else {
+                const key = document.getElementById("key-input").value;
+                const value = document.getElementById("value-input").value;
+                if (!key.trim() || !value.trim()) {
+                    alert("Environment variables can't be empty!");
+                    return;
+                }
+                let xhr = new XMLHttpRequest();
+                xhr.open("POST", `/api/setEnvironment/${process}/${key}/${value}`, true);
+                xhr.onreadystatechange = () => {
+                    if (xhr.readyState === 4) {
+                        if (xhr.status === 200 && xhr.responseText) {
+                            setDataInUl(xhr.responseText);
+                        } else if (xhr.status === 400 && xhr.responseText) {
+                            alert(xhr.responseText);
+                        }
+                    }
+                }
+                xhr.send();
+            }
+        }
+
+        function addNewProcess() {
+            const process = document.getElementById("process-input").value.trim();
+            if (!process) {
+                alert("Process name can't be empty!");
+                return;
+            }
+            let xhr = new XMLHttpRequest();
+            xhr.open("POST", `/api/newEnvironment`, true);
+            xhr.setRequestHeader("Content-Type", "text/plain");
+            xhr.onreadystatechange = () => {
+                if (xhr.readyState === 4 && xhr.responseText) {
+                    alert(xhr.responseText);
+                }
+            }
+            xhr.send(process);
+        }
+    </script>
+</body>
+
+</html>
