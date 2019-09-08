@@ -1,0 +1,19 @@
+{
+  "name": "file-challenge",
+  "version": "1.0.0",
+  "description": "File system coding challenge",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/subha-dev/file-challenge.git"
+  },
+  "author": "Subhadip Bal",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/subha-dev/file-challenge/issues"
+  },
+  "homepage": "https://github.com/subha-dev/file-challenge#readme"
+}
