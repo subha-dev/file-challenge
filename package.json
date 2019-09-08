@@ -15,5 +15,17 @@
   "bugs": {
     "url": "https://github.com/subha-dev/file-challenge/issues"
   },
-  "homepage": "https://github.com/subha-dev/file-challenge#readme"
+  "homepage": "https://github.com/subha-dev/file-challenge#readme",
+  "dependencies": {
+    "express": "^4.17.1",
+    "line-reader": "^0.4.0"
+  },
+  "devDependencies": {
+    "@types/express": "4.11.1",
+    "@types/line-reader": "^0.0.28",
+    "@types/node": "10.0.3",
+    "tsconfig": "7.0.0",
+    "tslint": "5.18.0",
+    "typescript": "3.4.3"
+  }
 }
